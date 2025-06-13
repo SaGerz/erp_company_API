@@ -4,5 +4,6 @@ const taskManamentController = require('../controller/taskManagementController.j
 
 router.post('/create-task', taskManamentController.CreateTaskManagement);
 router.put('/update-task/:id', taskManamentController.UpdateTaskManagement);
+router.delete('/delete-task/:id', taskManamentController.DeleteTaskManagement);
 
 module.exports = router;

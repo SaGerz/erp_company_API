@@ -39,4 +39,31 @@ const UpdateTaskManagement = async (req, res) => {
     }   
 }
 
-module.exports = {CreateTaskManagement, UpdateTaskManagement}
+const DeleteTaskManagement = async (req, res) => {
+    try {
+        const task_id = req.params.id;
+        const existingData = 'SELECT * FROM tasks WHERE Id = ?';
+        const [existing] = await db.query(existingData, [task_id])
+
+        if(existing.length === 0)
+        {
+            res.status(404).json({message: "Task tidak ditemukan!"})
+        }
+
+        const task = existing[0];
+
+        if(task.created_by !== req.user.id)
+        {
+            res.status(403).json({message: "Akses ditolak! Bukan pembuat task"});
+        }
+
+        const deleteQuery = 'DELETE FROM taskS WHERE Id = ?';
+        await db.query(deleteQuery, [task_id]);
+        res.status(201).json({message: "Data berhasil dihapus..."})
+
+    } catch (error) {
+        res.status(500).json({message: `Gagal update data task :${error}`});
+    }
+}
+
+module.exports = {CreateTaskManagement, UpdateTaskManagement, DeleteTaskManagement}
