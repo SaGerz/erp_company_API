@@ -4,6 +4,7 @@ const port = 5001;
 const authRoutes = require('./routes/authRoutes.js');
 const absensiRoutes = require('./routes/absensiRoutes.js');
 const taskManagementRoutes = require('./routes/taskManagementRoutes.js');
+const taskManagementAccessRoutes = require('./routes/taskManagementAccessRoutes.js');
 const verifyToken = require('./middleware/verifyToken.js');
 const authorize = require('./middleware/authorize.js');
 
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/absensi',verifyToken, absensiRoutes);
 app.use('/api/task-management', verifyToken, authorize([1]), taskManagementRoutes);
-
+app.use('/api/task-access', verifyToken, authorize([3]), taskManagementAccessRoutes)
 
 // Endpoint buat nge test RBAC Method :
 // app.get('/atasan', verifyToken, authorize([1, 2]), (req, res) => {
