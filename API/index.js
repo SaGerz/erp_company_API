@@ -12,7 +12,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/absensi',verifyToken, absensiRoutes);
 app.use('/api/task-management', verifyToken, authorize([1]), taskManagementRoutes);
-app.use('/api/task-access', verifyToken, authorize([3]), taskManagementAccessRoutes)
+app.use('/api/task-access', verifyToken, authorize([1, 2, 3]), taskManagementAccessRoutes)
 
 // Endpoint buat nge test RBAC Method :
 // app.get('/atasan', verifyToken, authorize([1, 2]), (req, res) => {
