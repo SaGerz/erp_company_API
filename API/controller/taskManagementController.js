@@ -57,7 +57,7 @@ const DeleteTaskManagement = async (req, res) => {
             res.status(403).json({message: "Akses ditolak! Bukan pembuat task"});
         }
 
-        const deleteQuery = 'DELETE FROM taskS WHERE Id = ?';
+        const deleteQuery = 'DELETE FROM tasks WHERE Id = ?';
         await db.query(deleteQuery, [task_id]);
         res.status(201).json({message: "Data berhasil dihapus..."})
 
