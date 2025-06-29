@@ -40,7 +40,6 @@ const absenKeluar = async (req, res) => {
         }
 
         const dataAbsensi = absensi[0];
-        console.log(dataAbsensi);
 
         if(dataAbsensi.jam_keluar)
         {
