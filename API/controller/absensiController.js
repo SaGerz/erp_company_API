@@ -55,4 +55,20 @@ const absenKeluar = async (req, res) => {
 
 }
 
-module.exports = {absenMasuk, absenKeluar};
+const getAbsensiUser = async (req, res) => {
+    const user_id = req.user.id;
+
+    try {
+        const query = "SELECT * FROM absensi WHERE user_id = ? ORDER BY tanggal DESC";
+        const [absensi] = await db.query(query, [user_id]);
+
+        res.status(200).json({
+            message: "Data Absensi berhasil diambil",
+            data: absensi
+        })
+    } catch (error) {
+        res.status(500).json({ message: `Gagal mengambil data absensi: ${error}` });
+    }
+}
+
+module.exports = {absenMasuk, absenKeluar, getAbsensiUser};
