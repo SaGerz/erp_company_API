@@ -59,7 +59,30 @@ const getAbsensiUser = async (req, res) => {
     const user_id = req.user.id;
 
     try {
-        const query = "SELECT * FROM absensi WHERE user_id = ? ORDER BY tanggal DESC";
+        // const query = "SELECT * FROM absensi WHERE user_id = ? ORDER BY tanggal DESC";
+        const query = `
+          WITH RECURSIVE all_dates AS (
+            SELECT CURDATE() - INTERVAL 13 DAY AS tanggal -- Mulai dari 14 hari lalu
+            UNION ALL
+            SELECT DATE_ADD(tanggal, INTERVAL 1 DAY)
+            FROM all_dates
+            WHERE tanggal < CURDATE() -- Sampai hari ini
+        )
+        SELECT
+            u.id AS user_id,
+            u.name,
+            d.tanggal,
+            a.id AS absensi_id,
+            a.jam_masuk,
+            a.jam_keluar,
+            COALESCE(a.keterangan, 'Tidak Hadir') AS keterangan
+        FROM users u
+        CROSS JOIN all_dates d
+        LEFT JOIN absensi a
+            ON u.id = a.user_id AND a.tanggal = d.tanggal
+        WHERE u.id = ?
+        ORDER BY d.tanggal DESC;
+        `
         const [absensi] = await db.query(query, [user_id]);
 
         res.status(200).json({
