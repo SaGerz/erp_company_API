@@ -7,6 +7,7 @@ const taskManagementRoutes = require('./routes/taskManagementRoutes.js');
 const taskManagementAccessRoutes = require('./routes/taskManagementAccessRoutes.js');
 const workingHistoryRoutes = require('./routes/workingHistoryRoutes.js');
 const absensiAccessRoutes = require('./routes/absensiAccessRoutes.js');
+const userKaryawanRoutes = require('./routes/userKaryawanRoutes.js');
 const verifyToken = require('./middleware/verifyToken.js');
 const authorize = require('./middleware/authorize.js');
 const bodyParser = require('body-parser');
@@ -22,6 +23,7 @@ app.use('/api/task-management', verifyToken, authorize([1]), taskManagementRoute
 app.use('/api/task-access', verifyToken, authorize([1, 2, 3]), taskManagementAccessRoutes);
 app.use('/api/working-history', verifyToken, workingHistoryRoutes);
 app.use('/api/absensi-access', verifyToken, authorize([1]), absensiAccessRoutes);
+app.use('/api/users', verifyToken, authorize([1]), userKaryawanRoutes);
 
 // Endpoint buat nge test RBAC Method :
 // app.get('/atasan', verifyToken, authorize([1, 2]), (req, res) => {
