@@ -66,4 +66,33 @@ const DeleteTaskManagement = async (req, res) => {
     }
 }
 
-module.exports = {CreateTaskManagement, UpdateTaskManagement, DeleteTaskManagement}
+const GetTaskManagement = async (req, res) => {
+    try {
+        const query = `
+        SELECT 
+            t.id,
+            t.judul,
+            t.deskripsi,
+            t.status,
+            t.deadline,
+            t.created_by,
+            u.name AS assigned_name
+        FROM 
+            tasks t
+        LEFT JOIN 
+            users u ON t.assigned_to = u.id
+        ORDER BY 
+            t.deadline ASC;
+        `;
+        const [tasks] = await db.query(query);
+
+        res.status(200).json({
+            message: "Berhasil mengambil semua data",
+            data: tasks
+        })
+    } catch (error) {
+        console.log(`Gagal mengambil seluruh data ${error}`);
+    }
+}
+
+module.exports = {CreateTaskManagement, UpdateTaskManagement, DeleteTaskManagement, GetTaskManagement}
