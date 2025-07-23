@@ -76,11 +76,12 @@ const GetTaskManagement = async (req, res) => {
             t.status,
             t.deadline,
             t.created_by,
+            t.assigned_to,
             u.name AS assigned_name
         FROM 
             tasks t
         LEFT JOIN 
-            users u ON t.assigned_to = u.id
+            users u ON t.assigned_to = u.id 
         ORDER BY 
             t.deadline ASC;
         `;

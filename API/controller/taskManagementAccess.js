@@ -3,7 +3,14 @@ const db = require('../config/db.js');
 const GetAssignedTask = async (req, res) => {
     try {
         const user_id = req.user.id;
-        const query = 'SELECT * FROM tasks WHERE assigned_to = ? ORDER BY deadline ASC';
+        const query = `
+            SELECT t.id, t.judul, t.deskripsi, t.status, t.deadline,
+                   u.name AS assigned_by
+            FROM tasks t
+            LEFT JOIN users u ON t.created_by = u.id
+            WHERE t.assigned_to = ?
+            ORDER BY t.deadline ASC
+        `;
         const [task] = await db.query(query, [user_id]);
 
         res.status(200).json({
