@@ -17,4 +17,31 @@ const getAllKaryawan = async (req, res) => {
    } 
 }
 
-module.exports = {getAllKaryawan}
+const getAllUsersByRole = async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        users.id, 
+        users.name, 
+        users.email, 
+        roles.name AS role 
+      FROM users 
+      JOIN roles ON users.role_id = roles.id
+      WHERE role_id = 3
+    `;
+
+    const [users] = await db.query(query);
+
+    res.status(200).json({
+      message: "Berhasil mengambil data user dengan role",
+      data: users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: `Gagal mengambil data user: ${error}`,
+    });
+  }
+};
+
+
+module.exports = {getAllKaryawan, getAllUsersByRole}
