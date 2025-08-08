@@ -77,6 +77,7 @@ const GetTaskManagement = async (req, res) => {
             t.deadline,
             t.created_by,
             t.assigned_to,
+            t.attachment,
             u.name AS assigned_name
         FROM 
             tasks t
