@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const register = async (req, res) => {
     const {name, email, password, role_id} = req.body;
 
-    if(!email || !name || !password || !role_id)
+    if(!email || !name || !password )
     {
         res.status(400).json({message: "Semua Field wajib diisi"});
     }
@@ -23,7 +23,7 @@ const register = async (req, res) => {
         }
     
         const hashPassword = await bcrypt.hash(password, 10);
-        const insertQuery =  'INSERT INTO users (name, email, password, role_id) VALUES (?, ?, ?, ?)';
+        const insertQuery =  'INSERT INTO users (name, email, password, role_id) VALUES (?, ?, ?, 3)';
 
         await db.query(insertQuery, [name, email, hashPassword, role_id])
         res.status(201).json({ message: 'Registrasi berhasil' });
@@ -51,7 +51,7 @@ const login = async (req, res) => {
         if (!isPasswordValid) return res.status(401).json({ error: 'Password salah' });
 
         const token = jwt.sign(
-        { id: user.id, role_id: user.role_id },
+        { id: user.id, username: user.name ,role_id: user.role_id },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
         );
