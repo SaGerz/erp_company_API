@@ -13,7 +13,7 @@ const verifyToken = require('./middleware/verifyToken.js');
 const authorize = require('./middleware/authorize.js');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path =require('path');
+const path = require('path');
 
 // app.use(express.json());
 app.use(bodyParser.json());
