@@ -14,6 +14,8 @@ const authorize = require('./middleware/authorize.js');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
 
 // app.use(express.json());
 app.use(bodyParser.json());
@@ -28,6 +30,9 @@ app.use('/api/working-history', verifyToken, workingHistoryRoutes);
 app.use('/api/working-history-access', verifyToken, authorize([1]), workingHistoryAccessRoutes);
 app.use('/api/absensi-access', verifyToken, authorize([1]), absensiAccessRoutes);
 app.use('/api/users', verifyToken, authorize([1]), userKaryawanRoutes);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // Endpoint buat nge test RBAC Method :
 // app.get('/atasan', verifyToken, authorize([1, 2]), (req, res) => {
