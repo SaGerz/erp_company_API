@@ -1,7 +1,7 @@
 const checkLocationMiddleware = (req, res, next) => {
     const kantorLat = -6.408641;
     const kantorLon = 106.797415;
-    const maxDistanceMeter = 100;
+    const maxDistanceMeter = 2000;
 
     const lat = parseFloat(req.body.lat);
     const lon = parseFloat(req.body.lon);
